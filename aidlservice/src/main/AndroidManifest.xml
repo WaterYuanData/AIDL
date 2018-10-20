@@ -16,6 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".RoomService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.aidlservice.AIDL_SERVICE" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
