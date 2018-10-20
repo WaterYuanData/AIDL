@@ -1,1 +1,1 @@
-include ':app', ':aidlclient'
+include ':app', ':aidlclient', ':aidlservice'
