@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/aidlclient" />
             <option value="$PROJECT_DIR$/aidlservice" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/contentproviderclient" />
             <option value="$PROJECT_DIR$/messengerclient" />
             <option value="$PROJECT_DIR$/messengerservice" />
           </set>
