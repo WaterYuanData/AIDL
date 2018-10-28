@@ -1,4 +1,4 @@
-package com.example.ran.aidl;
+package com.example.contentproviderclient;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -9,9 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.ran.aidl.R;
 
-    private static final String TAG = "MainActivity";
+public class ContentProviderClientActivity extends AppCompatActivity {
+
+    private static final String TAG = "ContentProviderClientAc";
     private TextView mTextView;
     private TextView mTextView2;
     // app 通过 ContentProvider跨进程访问 ContentProviderService
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_content_provider_client);
 
         initView();
     }
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 while (cursor.moveToNext()) {
                     String _id = cursor.getString(0);
                     String name = cursor.getString(1);
-                    Log.d(MainActivity.this.getClass().getName(), "onClick: _id=" + _id);
+                    Log.d(ContentProviderClientActivity.this.getClass().getName(), "onClick: _id=" + _id);
                     Log.d(TAG, "onClick: name=" + name);
                 }
                 cursor.close();
