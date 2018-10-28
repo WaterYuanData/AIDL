@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.example.contentproviderclient"
+        applicationId "com.example.contentproviderservice"
         minSdkVersion 20
         targetSdkVersion 28
         versionCode 1

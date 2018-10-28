@@ -1,4 +1,4 @@
-package com.example.contentproviderclient;
+package com.example.contentproviderservice;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.contentproviderservice.R;
+
 public class ContentProviderClientActivity extends AppCompatActivity {
 
     private static final String TAG = "ContentProviderClientAc";
     private TextView mTextView;
     private TextView mTextView2;
-    Uri mParse_Uri = Uri.parse("content://com.example.contentproviderclient/" + ContentProviderClient.databaseName);
+    Uri mParse_Uri = Uri.parse("content://com.example.contentproviderservice/" + ContentProviderService.databaseName);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,20 +1,16 @@
-package com.example.contentproviderclient;
+package com.example.contentproviderservice;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
 
-import static com.example.contentproviderclient.ContentProviderClient.tableName;
-
-public class ContentProviderClient extends ContentProvider {
-    private static final String TAG = "ContentProviderClient";
+public class ContentProviderService extends ContentProvider {
+    private static final String TAG = "ContentProviderService";
     private static UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
     private DBOpenHelper mDbOpenHelper;
     public static String databaseName = "databaseName";
@@ -22,11 +18,11 @@ public class ContentProviderClient extends ContentProvider {
 
     //为了方便直接使用UriMatcher,这里addURI,下面再调用Matcher进行匹配
     static {
-        matcher.addURI("com.example.contentproviderclient", databaseName, 1);
+        matcher.addURI("com.example.contentproviderservice", databaseName, 1);
     }
 
-    public ContentProviderClient() {
-        Log.d(TAG, "ContentProviderClient: ");
+    public ContentProviderService() {
+        Log.d(TAG, "ContentProviderService: ");
     }
 
     @Override
@@ -73,7 +69,7 @@ public class ContentProviderClient extends ContentProvider {
                     Log.d(TAG, "query: _id=" + _id);
                     Log.d(TAG, "query: name=" + name);
                 }
-                cursor.close();
+//                cursor.close();
                 return cursor;
         }
         return null;

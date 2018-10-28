@@ -1,4 +1,4 @@
-package com.example.contentproviderclient;
+package com.example.contentproviderservice;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBOpenHelper";
-    final String CREATE_SQL = "CREATE TABLE " + ContentProviderClient.tableName + "(_id INTEGER PRIMARY KEY AUTOINCREMENT,name)";
+    final String CREATE_SQL = "CREATE TABLE " + ContentProviderService.tableName + "(_id INTEGER PRIMARY KEY AUTOINCREMENT,name)";
 
     public DBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,
                         int version) {

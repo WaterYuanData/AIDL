@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.contentproviderclient">
+    package="com.example.contentproviderservice">
 
     <application
         android:allowBackup="true"
@@ -18,8 +18,8 @@
         </activity>
 
         <provider
-            android:name=".ContentProviderClient"
-            android:authorities="com.example.contentproviderclient"
+            android:name=".ContentProviderService"
+            android:authorities="com.example.contentproviderservice"
             android:enabled="true"
             android:exported="true"></provider>
     </application>
