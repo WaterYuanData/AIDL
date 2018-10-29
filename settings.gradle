@@ -1,1 +1,1 @@
-include ':ContentProviderClient', ':aidlclient', ':aidlservice', ':messengerclient', ':messengerservice', ':ContentProviderService'
+include ':ContentProviderClient', ':aidlclient', ':aidlservice', ':messengerclient', ':messengerservice', ':ContentProviderService', ':RegexTest'
