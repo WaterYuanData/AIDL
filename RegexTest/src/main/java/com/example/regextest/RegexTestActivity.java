@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegexTestActivity extends AppCompatActivity {
 
     private static final String TAG = "RegexTestActivity";
@@ -18,6 +21,7 @@ public class RegexTestActivity extends AppCompatActivity {
 
         testSplit();
         testReplace();
+        testMatch();
     }
 
     public void testSplit() {
@@ -55,5 +59,19 @@ public class RegexTestActivity extends AppCompatActivity {
         reg = "$1****$2";
         result = string.replaceAll(regex, reg);
         Log.d(TAG, "testReplace: " + result);// 138****1111
+    }
+
+    public void testMatch() {
+        Log.e(TAG, "testMatch: ****************获取是三个字母的单词*************************");
+        String string = "ni hao a, ming tian you kong mei?";
+        // String reg = "[a-z]{3}";// min tia
+        String reg = "\\b[a-z]{3}\\b";// 两边单词边界
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(string);
+        while (matcher.find()) {
+            String group = matcher.group();
+            Log.d(TAG, "testMatch: " + group);
+            Log.d(TAG, "testMatch: " + matcher.start() + ":" + matcher.end());
+        }
     }
 }
