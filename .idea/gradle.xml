@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/constraintlayout" />
             <option value="$PROJECT_DIR$/messengerclient" />
             <option value="$PROJECT_DIR$/messengerservice" />
+            <option value="$PROJECT_DIR$/okhttp" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
