@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,11 +23,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ImageView mImageView;
     private Button mButton;
+    private Button mButton2;
     public static final int SUCCESS = 1;
     public static final int FAIL = 0;
     private OkHttpClient mOkHttpClient;
     //    private String path = "https://www.baidu.com/img/superlogo_c4d7df0a003d3db9b65e9ef0fe6da1ec.png?where=super";
-    private String path = "http://i.guancha.cn/news/2018/03/25/20180325095919875.jpg";
+    private String image_path = "http://i.guancha.cn/news/2018/03/25/20180325095919875.jpg";
+    private String json_path = "http://gank.io/api/data/福利/10/1";
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    private OKManager mOkManager;// 工具类
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +55,14 @@ public class MainActivity extends AppCompatActivity {
         mOkHttpClient = new OkHttpClient();
         mImageView = findViewById(R.id.imageView);
         mButton = findViewById(R.id.button);
+        mButton2 = findViewById(R.id.button2);
+
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Request request = new Request.Builder().url(path).build();
                 // 使用get请求
-                Request request = new Request.Builder().get().url(path).build();
+                Request request = new Request.Builder().get().url(image_path).build();
                 Call call = mOkHttpClient.newCall(request);
                 call.enqueue(new Callback() {
                     @Override
@@ -74,6 +80,19 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             mHandler.sendEmptyMessage(FAIL);
                         }
+                    }
+                });
+            }
+        });
+        ///////////////////////////////////////////////////////////////////////
+        mOkManager = OKManager.getInstance();
+        mButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOkManager.asyncJsonStringByURl(json_path, new OKManager.Func1() {
+                    @Override
+                    public void onResponse(String string) {
+                        Log.d(TAG, "onResponse: " + string);
                     }
                 });
             }
