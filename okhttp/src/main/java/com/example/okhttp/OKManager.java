@@ -1,6 +1,7 @@
 package com.example.okhttp;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -8,12 +9,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OKManager {
@@ -85,6 +89,98 @@ public class OKManager {
                 }
             }
         });
+    }
+
+    public void asyncGetByteByURl(String url, final Func2 callBack) {
+        // 构建一个request请求
+        Request request = new Request.Builder().url(url).build();
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    onSuccessByteMethod(response.body().bytes(), callBack);
+                }
+            }
+        });
+    }
+
+    public void asyncDownLoadImageByURl(String url, final Func3 callBack) {
+        // 构建一个request请求
+        Request request = new Request.Builder().url(url).build();
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    byte[] data = response.body().bytes();
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    bitmap = new CropSquareTrans().transform(bitmap);
+                    callBack.onResponse(bitmap);
+                }
+            }
+        });
+    }
+
+    public void asyncJsonObjectByURl(String url, final Func4 callBack) {
+        // 构建一个request请求
+        Request request = new Request.Builder().url(url).build();
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    onSuccessJsonObjectMethod(response.body().string(), callBack);
+                }
+            }
+        });
+    }
+
+    /**
+     * 模拟表单提交
+     *
+     * @param url
+     * @param params
+     * @param callBack
+     */
+    public void sendComplexFrom(String url, Map<String, String> params, final Func4 callBack) {
+        // 表单对象，包含以input开始的对象，以html表单为主
+        FormBody.Builder formBody_builder = new FormBody.Builder();
+        if (params != null && !params.isEmpty()) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                formBody_builder.add(entry.getKey(), entry.getValue());
+            }
+        }
+        RequestBody requestBody = formBody_builder.build();
+        // 采用post方式提交
+        final Request request = new Request.Builder().url(url).post(requestBody).build();
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    onSuccessJsonObjectMethod(response.body().string(), callBack);
+                }
+            }
+        });
+
+
     }
 
     /**

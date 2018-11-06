@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mImageView;
     private Button mButton;
     private Button mButton2;
+    private Button mButton3;
     public static final int SUCCESS = 1;
     public static final int FAIL = 0;
     private OkHttpClient mOkHttpClient;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.imageView);
         mButton = findViewById(R.id.button);
         mButton2 = findViewById(R.id.button2);
+        mButton3 = findViewById(R.id.button3);
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +97,13 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "onResponse: " + string);
                     }
                 });
+            }
+        });
+        ///////////////////////////////////////////////////////////////////////
+        mButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                mOkManager.sendComplexFrom();
             }
         });
     }
