@@ -7,3 +7,4 @@ testActivity
 okhttp3
 
 RxJava
+参考：https://www.jianshu.com/p/a406b94f3188
