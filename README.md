@@ -5,3 +5,5 @@ testActivity
 测试Activity的生命周期
 
 okhttp3
+
+RxJava
