@@ -23,3 +23,6 @@ https://www.jianshu.com/p/11b3ec672812
 
 Android RxJava 实际应用案例讲解：网络请求嵌套回调
 https://www.jianshu.com/p/5f5d61f04f96
+
+（有条件）网络请求轮询
+https://www.jianshu.com/p/dbeaaa4afad5
