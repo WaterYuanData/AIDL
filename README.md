@@ -20,3 +20,6 @@ https://www.jianshu.com/p/11b3ec672812
 发送网络请求（区别于传统Retrofit形式）
 发送网络请求
 对返回的数据进行处理
+
+Android RxJava 实际应用案例讲解：网络请求嵌套回调
+https://www.jianshu.com/p/5f5d61f04f96

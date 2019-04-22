@@ -12,4 +12,7 @@ public interface GetRequest_Interface {
     // 如果接口里的url是一个完整的网址，那么放在Retrofit对象里的URL可以忽略
     // 采用Observable<...>接口
     // getCall()是接受网络请求数据的方法
+
+    @GET("ajax.php?a=fy&f=auto&t=auto&w=你好中国")
+    Observable<Translation> getCall2();
 }
