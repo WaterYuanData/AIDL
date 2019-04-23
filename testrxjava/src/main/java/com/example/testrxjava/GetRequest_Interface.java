@@ -2,8 +2,12 @@ package com.example.testrxjava;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface GetRequest_Interface {
+
+    @GET("ajax.php?a=fy&f=auto&t=auto&w=")
+    Observable<Translation> getTranslation(@Query("w") String string);
 
     @GET("ajax.php?a=fy&f=auto&t=auto&w=你好世界")
     Observable<Translation> getCall();

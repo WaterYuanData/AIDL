@@ -34,12 +34,96 @@ public class MainActivity extends AppCompatActivity {
 //        testRxJava();
 //        testGet();
 //        testFlatMap();
-        testRepeate();
+//        testRepeate();
+//        testScheduler();
+        testParameter();
+    }
 
+    /**
+     * 测试带参请求
+     */
+    private void testParameter() {
+        // 步骤1：创建Retrofit对象
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://fy.iciba.com/") // 设置 网络请求 Url
+                .addConverterFactory(GsonConverterFactory.create()) //设置使用Gson解析(记得加入依赖)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create()) // 支持RxJava
+                .build();
+
+        // 步骤2：创建 网络请求接口 的实例
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        // 步骤3：采用Observable<...>形式 对 网络请求 进行封装
+        Observable<Translation> observable = request.getTranslation("自由999");
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                // 如何使用 Action 和 Function
+                .subscribe(new Observer<Translation>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Translation translation) {
+                        translation.show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    /**
+     * 发送事件前的流程
+     * 指定所在线程
+     */
+    private void testScheduler() {
+        Observable.just(1, 2)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        Log.d(TAG, "accept: 111" + Thread.currentThread().getName());
+                    }
+                })
+                .subscribeOn(Schedulers.io())//亲测有效
+                .subscribe(new Observer<Integer>() {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe: 222" + Thread.currentThread().getName());
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        Log.d(TAG, "onNext: " + integer);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     // 设置变量 = 模拟轮询服务器次数
-    private int i = 0 ;
+    private int i = 0;
+
     /**
      * （有条件）网络请求轮询
      */
@@ -171,6 +255,9 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * （无条件）网络请求轮询
+     */
     private void testGet() {
         /*
          * 步骤1：采用interval（）延迟发送
@@ -256,6 +343,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 创建被观察者、观察者及建立订阅关系
+     */
     private void testRxJava() {
         // 步骤1：创建被观察者 Observable & 生产事件
         // 即 顾客入饭店 - 坐下餐桌 - 点菜
