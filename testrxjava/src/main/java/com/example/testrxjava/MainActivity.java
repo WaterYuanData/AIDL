@@ -16,8 +16,10 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -36,7 +38,28 @@ public class MainActivity extends AppCompatActivity {
 //        testFlatMap();
 //        testRepeate();
 //        testScheduler();
-        testParameter();
+//        testParameter();
+        testDefer();
+    }
+
+    private void testDefer() {
+        Observable<Long> observable = Observable.defer(() -> {
+            long time = System.currentTimeMillis();
+            Log.d(TAG, "testDefer: yyyy " + time);
+            return Observable.just(time);
+        });
+
+        observable.subscribe(time -> System.out.println(time + " yyyy"));
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        observable.subscribe(time -> System.out.println(time + " yyyy"));
+
+
     }
 
     /**
