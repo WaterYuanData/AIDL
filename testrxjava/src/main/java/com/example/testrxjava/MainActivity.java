@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 //        testGet();
 //        testFlatMap();
 //        testRepeate();
-//        testScheduler();
+        testScheduler();
 //        testParameter();
         testDefer();
     }
@@ -111,12 +111,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void testScheduler() {
         Observable.just(1, 2)
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        Log.d(TAG, "accept: 111" + Thread.currentThread().getName());
+                        Log.i(TAG, "accept: 111 " + Thread.currentThread().getName());
                     }
                 })
                 .subscribeOn(Schedulers.io())//亲测有效
@@ -124,12 +123,13 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe: 222" + Thread.currentThread().getName());
+                        Log.i(TAG, "onSubscribe: 222 " + Thread.currentThread().getName());
                     }
 
                     @Override
                     public void onNext(Integer integer) {
-                        Log.d(TAG, "onNext: " + integer);
+                        Log.i(TAG, "onSubscribe: 333 " + Thread.currentThread().getName());
+                        Log.i(TAG, "onNext: " + integer);
                     }
 
                     @Override
