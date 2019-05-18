@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        testRxJava();
+        testCreate();
 //        testGet();
 //        testFlatMap();
 //        testRepeate();
@@ -43,13 +44,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void testDefer() {
-        Observable<Long> observable = Observable.defer(() -> {
-            long time = System.currentTimeMillis();
-            Log.d(TAG, "testDefer: yyyy " + time);
-            return Observable.just(time);
+        Observable<Long> observable = Observable.defer(new Callable<ObservableSource<? extends Long>>() {
+            @Override
+            public ObservableSource<? extends Long> call() throws Exception {
+                long time = System.currentTimeMillis();
+                Log.i(TAG, "testDefer: 发射1 " + time);
+                return Observable.just(time);
+            }
         });
 
-        observable.subscribe(time -> System.out.println(time + " yyyy"));
+        observable.subscribe(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                Log.i(TAG, "accept: " + aLong + " testDefer 接收 1.1");
+            }
+        });
 
         try {
             Thread.sleep(1000);
@@ -57,7 +66,28 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        observable.subscribe(time -> System.out.println(time + " yyyy"));
+        observable.subscribe(time -> Log.i(TAG, "accept: " + time + " testDefer 接收 1.2"));
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        Log.i(TAG, "testDefer: ------------------------------------------------------------------------");
+
+        Observable<Long> longObservable = Observable.create(new ObservableOnSubscribe<Long>() {
+                                                                @Override
+                                                                public void subscribe(ObservableEmitter<Long> emitter) throws Exception {
+                                                                    long time = System.currentTimeMillis();
+                                                                    Log.i(TAG, "testDefer: 发射2 " + time);
+                                                                    emitter.onNext(time);
+                                                                }
+                                                            }
+
+        );
+        Log.i(TAG, "testDefer: 开始订阅2");
+        longObservable.subscribe(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                Log.i(TAG, "accept: " + aLong + " testDefer 接收2");
+            }
+        });
 
 
     }
@@ -110,7 +140,18 @@ public class MainActivity extends AppCompatActivity {
      * 指定所在线程
      */
     private void testScheduler() {
-        Observable.just(1, 2)
+        Observable
+                .create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                        Log.i(TAG, "subscribe: 产生事件序列 发射 " + Thread.currentThread().getName());
+                        emitter.onNext(1);
+                        emitter.onNext(12);
+                        emitter.onNext(123);
+                        emitter.onComplete();
+                    }
+                })
+                .subscribeOn(Schedulers.io())//指定事件序列的发射所在线程
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -118,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(TAG, "accept: 111 " + Thread.currentThread().getName());
                     }
                 })
-                .subscribeOn(Schedulers.io())//亲测有效
+                .subscribeOn(Schedulers.io())//指定doOnSubscribe所在线程
                 .subscribe(new Observer<Integer>() {
 
                     @Override
@@ -369,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 创建被观察者、观察者及建立订阅关系
      */
-    private void testRxJava() {
+    private void testCreate() {
         // 步骤1：创建被观察者 Observable & 生产事件
         // 即 顾客入饭店 - 坐下餐桌 - 点菜
         //  1. 创建被观察者 Observable 对象
