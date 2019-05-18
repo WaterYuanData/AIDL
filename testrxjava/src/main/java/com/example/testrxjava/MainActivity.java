@@ -43,6 +43,38 @@ public class MainActivity extends AppCompatActivity {
         testDefer();
     }
 
+    private void testMap() {
+        Observable
+                .just(1, 2, 3)
+                .map(new Function<Integer, String>() {
+                    @Override
+                    public String apply(Integer integer) throws Exception {
+                        return "变换事件的数据类型" + integer;
+                    }
+                })
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        Log.i(TAG, "onNext: testMap " + s);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     private void testDefer() {
         Observable<Long> observable = Observable.defer(new Callable<ObservableSource<? extends Long>>() {
             @Override
@@ -153,10 +185,16 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .subscribeOn(Schedulers.io())//指定事件序列的发射所在线程
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        Log.i(TAG, "doOnNext: accept: "+integer);
+                    }
+                })
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        Log.i(TAG, "accept: 111 " + Thread.currentThread().getName());
+                        Log.i(TAG, "doOnSubscribe: accept: 111 " + Thread.currentThread().getName());
                     }
                 })
                 .subscribeOn(Schedulers.io())//指定doOnSubscribe所在线程
